@@ -1,0 +1,28 @@
+{
+  "name": "exchangeapi",
+  "version": "1.0.0",
+  "description": "Practica de consumo de una api, fetch,node,cypress.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress-run": "cypress run",
+    "cypress-dev": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Getsuga743/exchangeapi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Getsuga743/exchangeapi/issues"
+  },
+  "homepage": "https://github.com/Getsuga743/exchangeapi#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.2",
+    "jquery": "^3.5.1"
+  },
+  "devDependencies": {
+    "cypress": "^5.2.0"
+  }
+}
