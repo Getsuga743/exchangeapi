@@ -26,7 +26,7 @@ function getMonedas(base = "EUR", fecha = "latest") {
   return fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
     .then((res) => res.json())
     .then((resJSON) => {
-      return resJSON.rates;
+      return resJSON;
     });
 }
 //con esto se obtiene la informacion para el los selects del formulario
@@ -35,13 +35,3 @@ function getMonedas(base = "EUR", fecha = "latest") {
 //     Object.keys(cambios).concat("EUR");
 //   })
 // }
-
-function cargarOptions(monedas) {
-  monedas.forEach((element) => {
-    const option = document.createElement("option");
-    const valor = element;
-    option.value = valor;
-    option.text = valor;
-    $base.appendChild(option);
-  });
-}

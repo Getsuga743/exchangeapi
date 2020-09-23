@@ -12,7 +12,65 @@ let valores;
 
 async function iniciar() {
   let divisas = await obtenerCambios();
-  return cargarOptions(divisas);
+  cargarOptions(divisas);
+  $form.addEventListener("submit", (e) => {
+    $tablaCuerpo.textContent=""
+    let value;
+    let fecha = $fecha.value;
+
+    if ($fecha.value === "") {
+      fecha = "latest";
+      getCall(value, fecha)
+        .then((res) => {
+          console.log(res);
+          cell1 = crearCell(Object.keys(res.rates));
+          cell2 = crearCell(Object.values(res.rates));
+          rows = crearRows(Object.values(res.rates).length);
+          rows.forEach((el) => {
+            $tablaCuerpo.appendChild(el);
+          });
+          console.log(cell1);
+          document.querySelectorAll(".valor").forEach((el, i) => {
+            el.appendChild(cell1[i]);
+            el.appendChild(cell2[i]);
+          });
+        })
+        .catch((err) => console.error(err));
+    }
+    if ($fecha.value != "") {
+      document.querySelector(".date").classList = "date";
+      getCall(value)
+        .then((res) => {
+          console.log(res);
+          cell1 = crearCell(Object.keys(res.rates));
+          cell2 = crearCell(Object.values(res.rates));
+          rows = crearRows(Object.values(res.rates).length);
+          rows.forEach((el) => {
+            $tablaCuerpo.appendChild(el);
+          });
+          console.log(cell1);
+          document.querySelectorAll(".valor").forEach((el, i) => {
+            el.appendChild(cell1[i]);
+            el.appendChild(cell2[i]);
+          });
+        })
+        .catch((err) => console.error(err));
+
+      getCall(value, fecha)
+        .then((x) => {
+          cell3 = crearCell(Object.values(x.rates));
+          document.querySelectorAll(".valor").forEach((el, i) => {
+            el.appendChild(cell3[i]);
+          });
+        })
+        .catch((err) => console.error(err));
+    }
+    crearTitulo($base.value, $fecha.value);
+    $table.classList = "";
+
+    e.preventDefault();
+
+  });
 }
 
 async function getCall(val1, val2) {
@@ -20,68 +78,36 @@ async function getCall(val1, val2) {
   return foo;
 }
 
-$form.addEventListener("submit", (e) => {
-  value = $base.value;
-  fecha = $fecha.value;
-  console.log(fecha);
-  if (fecha === "") {
-    fecha = "latest";
-  }
-  if (fecha != "") {
-    value2 = getCall(value)
-      .then((x) => {
-        valores = x;
-        agregarTabla2(x);
-      })
-      .catch((err) => console.error(err));
-  }
-  crearTitulo(value, fecha);
-  value = getCall(value, fecha)
-    .then((x) => {
-      valores = x;
-      agregarTabla(x);
-    })
-    .catch((err) => console.error(err));
-  setTimeout(() => {
-    console.log("yay");
-    finalizarTabla();
-  }, 2000);
-  $table.classList = "";
-
-  e.preventDefault();
-});
-//agrega a la tabla filas con dos celdas, con el nombre de la moneda y el valor
-function agregarTabla(val) {
-  for (const property in val) {
-    let tr = document.createElement("tr");
-    let td = document.createElement("td");
-    let td1 = document.createElement("td");
-    td.textContent = property;
-    td1.textContent = val[property];
-    tr.appendChild(td);
-    tr.appendChild(td1);
-    tr.classList.add("valor");
-    $tablaCuerpo.appendChild(tr);
-  }
-}
-function agregarTabla2(val) {
-  for (const property in val) {
-    let tr = document.createElement("tr");
-    let td1 = document.createElement("td");
-    td1.textContent = val[property];
-    tr.appendChild(td1);
-    columna.push(tr);
-  }
-}
-
-function finalizarTabla() {
-  let rows = document.querySelectorAll(".valor");
-  return rows.forEach((el, index) => {
-    let x = el.insertCell(-1);
-    x.innerText = columna[index].textContent;
+function cargarOptions(monedas) {
+  monedas.forEach((element) => {
+    const option = document.createElement("option");
+    const valor = element;
+    option.value = valor;
+    option.text = valor;
+    $base.appendChild(option);
   });
 }
-function crearTitulo(val, date) {
+
+function crearCell(content) {
+  let cells = [];
+  for (let i = 0; i < content.length; i++) {
+    let td = document.createElement("td");
+    td.innerText = content[i];
+    cells.push(td);
+  }
+  return cells;
+}
+function crearRows(length) {
+  let arr = [];
+  for (let i = 0; i < length; i++) {
+    let tr = document.createElement("tr");
+    tr.classList.add("valor");
+    arr.push(tr);
+  }
+  return arr;
+}
+
+function crearTitulo(val = "EUR", date) {
   let valHTML = $tablaTituloVal;
   let dateHTML = $tablaTituloFecha;
   valHTML.textContent = `Base: ${val}`;
@@ -92,4 +118,3 @@ function ocultarElemento(el) {
   el.classList.add("oculto");
 }
 
-iniciar();
