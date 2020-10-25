@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Exchange</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="src/styles.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Exchange API</a>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+      <h1></h1>
+      <p>
+        Seleccione la base, y la moneda de las cuales quiere obtener el ratio de
+        conversion (Por defecto la base es EUR).
+      </p>
+    </div>
+    <div class="container">
+      <form id="Exchange">
+        <div class="form-group col">
+          <label for="fecha">Fecha:</label>
+          <input
+            type="date"
+            class="form-control"
+            id="fecha"
+            min="1999-01-01"
+            max="2020-09-19"
+          />
+        </div>
+        <div class="form-group col">
+          <label for="base">Base:</label>
+          <select name="base" class="form-control-sm select" id="base">
+            <option value=""></option>
+          </select>
+        </div>
+        <div class="form-group col-auto">
+          <div class="col-md-12 text-center">
+            <button
+              type="submit"
+              class="btn btn-secondary justify-content-center"
+            >
+              Obtener
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="oculto res" id="tabla">
+      <div class="container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="value">Base</th>
+              <th scope="col" class="latest">Hoy</th>
+              <th scope="col" class="date">Fecha</th>
+            </tr>
+          </thead>
+          <tbody class="cuerpo-tabla"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="src/index.js"></script>
+    <script src="src/api.js"></script>
+    <script src="src/ui.js"></script>
+  </body>
+</html>
