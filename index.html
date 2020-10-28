@@ -47,10 +47,10 @@
             max="2020-09-19"
           />
         </div>
-        <div class="form-group col">
+        <div class="form-group col" id="BaseDiv">
           <label for="base">Base:</label>
           <select name="base" class="form-control-sm select" id="base">
-            <option value=""></option>
+            <option value="" selected="EUR"></option>
           </select>
         </div>
         <div class="form-group col-auto">
@@ -68,7 +68,7 @@
 
     <div class="oculto res" id="tabla">
       <div class="container">
-        <table class="table">
+        <table class="table table-striped table-dark"">
           <thead>
             <tr>
               <th scope="col" class="value">Base</th>
@@ -83,8 +83,9 @@
     <!-- Bootstrap core JavaScript -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="src/index.js"></script>
-    <script src="src/api.js"></script>
+
     <script src="src/ui.js"></script>
+    <script src="src/api.js"></script>
+    <script src="src/index.js"></script>
   </body>
 </html>

@@ -1,82 +1,8 @@
-const $fecha = document.querySelector("#fecha");
-const $base = document.querySelector("#base");
-const $exchange = document.querySelector("#exchange");
-const $form = document.querySelector("#Exchange");
-const $table = document.querySelector("#tabla");
-const $tablaCuerpo = document.querySelector(".cuerpo-tabla");
-const $tablaTituloVal = document.querySelector(".value");
-const $tablaTituloFecha = document.querySelector(".date");
+//==============================
+// Metodos de la interfaz
+//==============================
 
-let columna = [];
-let valores;
-
-async function iniciar() {
-  let divisas = await obtenerCambios();
-  cargarOptions(divisas);
-  $form.addEventListener("submit", (e) => {
-    $tablaCuerpo.textContent=""
-    let value;
-    let fecha = $fecha.value;
-
-    if ($fecha.value === "") {
-      fecha = "latest";
-      getCall(value, fecha)
-        .then((res) => {
-          console.log(res);
-          cell1 = crearCell(Object.keys(res.rates));
-          cell2 = crearCell(Object.values(res.rates));
-          rows = crearRows(Object.values(res.rates).length);
-          rows.forEach((el) => {
-            $tablaCuerpo.appendChild(el);
-          });
-          console.log(cell1);
-          document.querySelectorAll(".valor").forEach((el, i) => {
-            el.appendChild(cell1[i]);
-            el.appendChild(cell2[i]);
-          });
-        })
-        .catch((err) => console.error(err));
-    }
-    if ($fecha.value != "") {
-      document.querySelector(".date").classList = "date";
-      getCall(value)
-        .then((res) => {
-          console.log(res);
-          cell1 = crearCell(Object.keys(res.rates));
-          cell2 = crearCell(Object.values(res.rates));
-          rows = crearRows(Object.values(res.rates).length);
-          rows.forEach((el) => {
-            $tablaCuerpo.appendChild(el);
-          });
-          console.log(cell1);
-          document.querySelectorAll(".valor").forEach((el, i) => {
-            el.appendChild(cell1[i]);
-            el.appendChild(cell2[i]);
-          });
-        })
-        .catch((err) => console.error(err));
-
-      getCall(value, fecha)
-        .then((x) => {
-          cell3 = crearCell(Object.values(x.rates));
-          document.querySelectorAll(".valor").forEach((el, i) => {
-            el.appendChild(cell3[i]);
-          });
-        })
-        .catch((err) => console.error(err));
-    }
-    crearTitulo($base.value, $fecha.value);
-    $table.classList = "";
-
-    e.preventDefault();
-
-  });
-}
-
-async function getCall(val1, val2) {
-  let foo = await getMonedas(val1, val2);
-  return foo;
-}
+//carga las opciones del formulario
 
 function cargarOptions(monedas) {
   monedas.forEach((element) => {
@@ -87,7 +13,9 @@ function cargarOptions(monedas) {
     $base.appendChild(option);
   });
 }
-
+//==============================
+// funciones para crear la tabla
+//==============================
 function crearCell(content) {
   let cells = [];
   for (let i = 0; i < content.length; i++) {
@@ -106,15 +34,54 @@ function crearRows(length) {
   }
   return arr;
 }
-
-function crearTitulo(val = "EUR", date) {
+//crea el titulo, si no hay fecha definida, no hace la segunda columna
+function crearTitulo(val, date) {
   let valHTML = $tablaTituloVal;
   let dateHTML = $tablaTituloFecha;
+  if (val === "") {
+    val = "EUR";
+  }
   valHTML.textContent = `Base: ${val}`;
-  dateHTML.textContent = `Fecha: ${date}`;
+  if (date) {
+    dateHTML.textContent = `Fecha: ${date}`;
+  } else {
+    ocultarElemento(dateHTML);
+  }
 }
+//-----------------------------
 
 function ocultarElemento(el) {
   el.classList.add("oculto");
 }
 
+function ObtenerfechaHoy() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = yyyy + "-" + mm + "-" + dd;
+  return today;
+}
+
+function cargarCeldas(cell1, cell2, cell3) {
+  document.querySelectorAll(".valor").forEach((el, i) => {
+    el.appendChild(cell1[i]);
+    el.appendChild(cell2[i]);
+    el.appendChild(cell3[i]);
+  });
+}
+function HacerTabla(cel1, cel2, cel3) {
+  let celda1 = crearCell(cel1);
+  let celda2 = crearCell(cel2);
+  let celda3 = crearCell(cel3);
+  let rows = crearRows(celda1.length);
+  rows.forEach((el) => {
+    $tablaCuerpo.appendChild(el);
+  });
+  cargarCeldas(celda1, celda2, celda3);
+  crearTitulo($base.value, $fecha.value);
+}
+
+async function CargarLosDatos(cel1, cel2, cel3) {
+  await HacerTabla(cel1, cel2, cel3);
+}
