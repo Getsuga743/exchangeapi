@@ -1,17 +1,3 @@
-// fetch("https://api.exchangeratesapi.io/latest")
-//   .then(respuesta => respuesta.json())
-//   .then(respuestaJSON => {
-//     $("h1").text(
-//       `Cambios del día ${respuestaJSON.date} en base ${respuestaJSON.base}`
-//     );
-
-//     $("ul").html('');
-
-//     Object.keys(respuestaJSON.rates).forEach(moneda => {
-//       $("ul").append($(`<li>${moneda}: ${respuestaJSON.rates[moneda]}</li>`));
-//     });
-//   })
-//   .catch(error => console.error("FALLÓ", error));
 
 //==============================
 // Metodos de llamada a la API
@@ -28,7 +14,7 @@ async function obtenerCambios(base = "EUR", fecha = "latest") {
   return Object.keys(nombresMonedas.rates).concat("EUR");
 }
 //devuelve un json con los rates de intercambio
-async function getMonedas(base = "EUR", fecha = "latest") {
+async function getMonedas(base, fecha) {
   return fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
     .then((res) => res.json())
     .then((resJSON) => {
@@ -41,9 +27,3 @@ async function getRatesDeLaApi(val1 = "EUR", val2 = "latest") {
   return foo;
 }
 
-//con esto se obtiene la informacion para el los selects del formulario
-// function obtenerMonedas() {
-//   obtenerCambios().then((cambios) => {
-//     Object.keys(cambios).concat("EUR");
-//   })
-// }

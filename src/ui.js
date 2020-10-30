@@ -17,13 +17,27 @@ function cargarOptions(monedas) {
 // funciones para crear la tabla
 //==============================
 function crearCell(content) {
-  let cells = [];
-  for (let i = 0; i < content.length; i++) {
-    let td = document.createElement("td");
-    td.innerText = content[i];
-    cells.push(td);
+  let arr = [];
+  let Cells = [];
+  for (let i = 0; i <= content.length - 1; i++) {
+    if (i < 1) {
+      arr.push(Object.keys(content[i].rates));
+      arr.push(Object.values(content[i].rates));
+    } else {
+      arr.push(Object.values(content[i].rates));
+    }
   }
-  return cells;
+  arr.forEach((element, index) => {
+    let Column = [];
+    element.forEach((el, i) => {
+      let _td = document.createElement("td");
+      _td.textContent = el;
+      Column.push(_td);
+    });
+    Cells.push(Column);
+    Column = [];
+  });
+  return Cells;
 }
 function crearRows(length) {
   let arr = [];
@@ -36,14 +50,14 @@ function crearRows(length) {
 }
 //crea el titulo, si no hay fecha definida, no hace la segunda columna
 function crearTitulo(val, date) {
+  let value = val || "EUR";
+  let DATE = date || "latest";
+  console.log(DATE, value);
   let valHTML = $tablaTituloVal;
   let dateHTML = $tablaTituloFecha;
-  if (val === "") {
-    val = "EUR";
-  }
-  valHTML.textContent = `Base: ${val}`;
+  valHTML.textContent = `Base: ${value}`;
   if (date) {
-    dateHTML.textContent = `Fecha: ${date}`;
+    dateHTML.textContent = `Fecha: ${DATE}`;
   } else {
     ocultarElemento(dateHTML);
   }
@@ -63,25 +77,41 @@ function ObtenerfechaHoy() {
   return today;
 }
 
-function cargarCeldas(cell1, cell2, cell3) {
-  document.querySelectorAll(".valor").forEach((el, i) => {
-    el.appendChild(cell1[i]);
-    el.appendChild(cell2[i]);
-    el.appendChild(cell3[i]);
-  });
+function cargarCeldas(arr, num) {
+  console.log(arr);
+  console.log(num);
+  switch (num) {
+    case 1:
+      document.querySelectorAll(".valor").forEach((el, i) => {
+        el.appendChild(arr[0][i]);
+      });
+      break;
+    case 2:
+      document.querySelectorAll(".valor").forEach((el, i) => {
+        el.appendChild(arr[0][i]);
+        el.appendChild(arr[1][i]);
+      });
+      break;
+    case 3:
+      document.querySelectorAll(".valor").forEach((el, i) => {
+        el.appendChild(arr[0][i]);
+        el.appendChild(arr[1][i]);
+        el.appendChild(arr[2][i]);
+      });
+      break;
+  }
 }
-function HacerTabla(cel1, cel2, cel3) {
-  let celda1 = crearCell(cel1);
-  let celda2 = crearCell(cel2);
-  let celda3 = crearCell(cel3);
-  let rows = crearRows(celda1.length);
+function HacerTabla(arr) {
+  let Cells = crearCell(arr);
+  console.log(Cells);
+  let rows = crearRows(Cells[0].length);
   rows.forEach((el) => {
     $tablaCuerpo.appendChild(el);
   });
-  cargarCeldas(celda1, celda2, celda3);
+  cargarCeldas(Cells, Cells.length);
   crearTitulo($base.value, $fecha.value);
 }
 
-async function CargarLosDatos(cel1, cel2, cel3) {
-  await HacerTabla(cel1, cel2, cel3);
+async function CargarLosDatos(arr) {
+  await HacerTabla(arr);
 }
