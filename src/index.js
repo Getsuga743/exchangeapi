@@ -1,42 +1,22 @@
+const $form = document.querySelector("#Exchange");
 const $fecha = document.querySelector("#fecha");
 const $base = document.querySelector("#base");
-const $exchange = document.querySelector("#exchange");
-const $form = document.querySelector("#Exchange");
-const $table = document.querySelector("#tabla");
-const $tablaCuerpo = document.querySelector(".cuerpo-tabla");
-const $tablaTituloVal = document.querySelector(".value");
-const $tablaTituloFecha = document.querySelector(".date");
+const $moneda = document.querySelector("#moneda");
+const $divResultado = document.querySelector("#resultadoMoneda");
+const $tabla = document.querySelector("#tabla");
+const $spinner = document.querySelector("#spinner");
 
-async function iniciar() {
-  let divisas = await obtenerCambios();
-  let ArrFetch = [];
-  cargarOptions(divisas);
-  $form.addEventListener("submit", (e) => {
-    $tablaCuerpo.textContent = "";
-    let value = $base.value || "EUR";
-    let fecha = $fecha.value || "latest";
-    if ($fecha.value === "") {
-      console.log("no hay fecha");
-      getRatesDeLaApi(value, fecha).then((res) => {
-        ArrFetch.push(res);
-      });
-    }
-    if ($fecha.value != "") {
-      document.querySelector(".date").classList = "date";
-      getRatesDeLaApi(value).then((res) => {
-        ArrFetch.push(res);
-      });
-      getRatesDeLaApi(value, fecha).then((res) => {
-        ArrFetch.push(res);
-      });
-      console.log(ArrFetch);
-      CargarLosDatos(ArrFetch);
-      crearTitulo($base.value, $fecha.value);
-      $table.classList = "";
-    }
-    ArrFetch = [];
-    e.preventDefault();
-  });
-}
+cargarForm($base);
 
-iniciar();
+$form.addEventListener("submit", (e) => {
+  $tabla.innerHTML = "";
+  let datosForm = [
+    { fecha: $fecha.value, moneda: $base.value },
+    { fecha: $fecha.value, moneda: $base.value },
+  ];
+  console.log(datosForm)
+  mostrarTabla(datosForm,$spinner,$tabla);
+  e.preventDefault();
+  
+});
+

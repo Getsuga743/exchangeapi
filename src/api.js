@@ -1,29 +1,21 @@
-
 //==============================
 // Metodos de llamada a la API
 //==============================
 
-//----------
-//devuelve los nombres de las monedas
-async function obtenerCambios(base = "EUR", fecha = "latest") {
-  let nombresMonedas = await fetch(
-    `https://api.exchangeratesapi.io/${fecha}?base=${base}`
+async function getMonedas(fecha = "latest", base = "EUR") {
+  const response = await fetch(
+    `https://api.exchangeratesapi.io/${fecha}?base=${base}`,
   );
-
-  nombresMonedas = await nombresMonedas.json();
-  return Object.keys(nombresMonedas.rates).concat("EUR");
+  const fetchJson = await response.json();
+  return fetchJson;
 }
-//devuelve un json con los rates de intercambio
-async function getMonedas(base, fecha) {
-  return fetch(`https://api.exchangeratesapi.io/${fecha}?base=${base}`)
-    .then((res) => res.json())
-    .then((resJSON) => {
-      return resJSON;
-    });
+//esta función era porque queria convertir la web para renderizar mas de un llamado
+async function resolverLlamados(arr) {
+  return await Promise.all(
+    arr.map((el) => getMonedas((el.fecha = "latest"), el.moneda)),
+  )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => err);
 }
-
-async function getRatesDeLaApi(val1 = "EUR", val2 = "latest") {
-  let foo = await getMonedas(val1, val2);
-  return foo;
-}
-
