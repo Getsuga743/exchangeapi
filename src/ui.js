@@ -2,116 +2,84 @@
 // Metodos de la interfaz
 //==============================
 
-//carga las opciones del formulario
+// Carga de las opciones en el formulario
 
-function cargarOptions(monedas) {
-  monedas.forEach((element) => {
-    const option = document.createElement("option");
-    const valor = element;
-    option.value = valor;
-    option.text = valor;
-    $base.appendChild(option);
+async function cargarForm(el) {
+  let List = await getMonedas().then(({ rates }) => {
+    return Object.keys(rates).concat("EUR");
+  });
+  List.forEach((item) => {
+    let option = document.createElement("option");
+    option.value = item;
+    option.textContent = item;
+    el.append(option);
   });
 }
-//==============================
-// funciones para crear la tabla
-//==============================
-function crearCell(content) {
-  let arr = [];
-  let Cells = [];
-  for (let i = 0; i <= content.length - 1; i++) {
-    if (i < 1) {
-      arr.push(Object.keys(content[i].rates));
-      arr.push(Object.values(content[i].rates));
-    } else {
-      arr.push(Object.values(content[i].rates));
-    }
-  }
-  arr.forEach((element, index) => {
-    let Column = [];
-    element.forEach((el, i) => {
-      let _td = document.createElement("td");
-      _td.textContent = el;
-      Column.push(_td);
-    });
-    Cells.push(Column);
-    Column = [];
-  });
-  return Cells;
+
+//Creacion de la tabla
+
+function crearHeadTable(base) {
+  let thead = document.createElement("thead");
+  thead.innerHTML = `<th scope="col">Moneda:${base}</th>
+                      <th scope="col">Precio</th>`;
+  return thead;
 }
-function crearRows(length) {
-  let arr = [];
-  for (let i = 0; i < length; i++) {
+function crearBodyTable(data) {
+  let $tbody = document.createElement("tbody");
+  Object.entries(data).map((dato) => {
     let tr = document.createElement("tr");
-    tr.classList.add("valor");
-    arr.push(tr);
-  }
-  return arr;
-}
-//crea el titulo, si no hay fecha definida, no hace la segunda columna
-function crearTitulo(val, date) {
-  let value = val || "EUR";
-  let DATE = date || "latest";
-  console.log(DATE, value);
-  let valHTML = $tablaTituloVal;
-  let dateHTML = $tablaTituloFecha;
-  valHTML.textContent = `Base: ${value}`;
-  if (date) {
-    dateHTML.textContent = `Fecha: ${DATE}`;
-  } else {
-    ocultarElemento(dateHTML);
-  }
-}
-//-----------------------------
+    dato.map((el, index) => {
+      let td = document.createElement("td");
+      if (index === 1) {
+        el = el.toFixed(3);
+      }
+      td.textContent = el;
 
-function ocultarElemento(el) {
-  el.classList.add("oculto");
-}
-
-function ObtenerfechaHoy() {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  today = yyyy + "-" + mm + "-" + dd;
-  return today;
-}
-
-function cargarCeldas(arr, num) {
-  console.log(arr);
-  console.log(num);
-  switch (num) {
-    case 1:
-      document.querySelectorAll(".valor").forEach((el, i) => {
-        el.appendChild(arr[0][i]);
-      });
-      break;
-    case 2:
-      document.querySelectorAll(".valor").forEach((el, i) => {
-        el.appendChild(arr[0][i]);
-        el.appendChild(arr[1][i]);
-      });
-      break;
-    case 3:
-      document.querySelectorAll(".valor").forEach((el, i) => {
-        el.appendChild(arr[0][i]);
-        el.appendChild(arr[1][i]);
-        el.appendChild(arr[2][i]);
-      });
-      break;
-  }
-}
-function HacerTabla(arr) {
-  let Cells = crearCell(arr);
-  console.log(Cells);
-  let rows = crearRows(Cells[0].length);
-  rows.forEach((el) => {
-    $tablaCuerpo.appendChild(el);
+      tr.appendChild(td);
+    });
+    $tbody.appendChild(tr);
   });
-  cargarCeldas(Cells, Cells.length);
-  crearTitulo($base.value, $fecha.value);
+
+  return $tbody;
 }
 
-async function CargarLosDatos(arr) {
-  await HacerTabla(arr);
+function CrearTable(rates, base) {
+  let $table = document.createElement("table");
+  let $tbody = crearBodyTable(rates);
+  let $thead = crearHeadTable(base);
+  $table.appendChild($thead);
+  $table.className = "table table-striped table-dark text-center table-sm";
+  $table.appendChild($tbody);
+  return $table;
+}
+
+//render de los elementos
+
+function renderizarTabla([obj]) {
+  let { rates, base } = obj;
+  let tablaCreada = CrearTable(rates, base);
+  return tablaCreada;
+}
+
+function renderizarError(text) {
+  let $error = document.createElement("div");
+  $error.className = "alert alert-danger";
+  $error.textContent = text;
+  return $error;
+}
+
+//resuelve las promesas,crea tabla con la data, si algo sale mal, renderiza un error
+function cargarResult(container, data) {
+  resolverLlamados(data)
+    .then((data) => container.appendChild(renderizarTabla(data)))
+    .catch(() => {
+      container.appendChild(renderizarError("Hubo un error, intente de nuevo"));
+    });
+}
+
+function mostrarTabla(datosForm, spinner, tabla) {
+  spinner.classList.remove("oculto");
+  setTimeout(() => {
+    spinner.classList.add("oculto"), cargarResult(tabla, datosForm);
+  }, 500);
 }

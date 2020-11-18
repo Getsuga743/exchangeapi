@@ -1,16 +1,34 @@
-.container{
-    margin-top:10px;
+.container {
+  margin-top: 10px;
 }
-.oculto{
-    display: none!important ;
+.oculto {
+  display: none !important ;
 }
-#Exchange{
-    border:solid 2px rgb(146, 146, 146);
-    border-radius: 5px;
-    padding: 1%;
+#Exchange {
+  border: solid 2px rgb(146, 146, 146);
+  border-radius: 5px;
+  padding: 1%;
 }
-.table{
-    border:solid 2px rgb(146, 146, 146);
-    border-radius: 5px;
-    padding: 1%;
+.form-label {
+  margin: 0 1rem;
+}
+.valores {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.button {
+  margin-top: 1rem;
+}
+
+#spinner {
+  margin: auto;
+  display: flex;
+  width: 2rem;
+}
+#tabla {
+  width: 80%;
+  margin: auto;
 }

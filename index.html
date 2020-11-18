@@ -39,7 +39,7 @@
       <form id="Exchange">
         <div class="form-group col">
           <label for="fecha">Fecha:</label>
-         
+
           <input
             type="date"
             class="form-control"
@@ -49,13 +49,18 @@
           />
         </div>
 
-        <div class="form-group col" id="BaseDiv">
-          <label for="base">Base:</label>
-          <select name="base" class="form-control-sm select" id="base">
-            <option value="" selected="EUR"></option>
-          </select>
+        <div class="form-inline mx-auto valores">
+          <div class="form-group">
+            <label class="form-label" for="base">Base </label>
+            <select class="form-control" name="base" id="base"></select>
+          </div>
+          <!-- <div class="form-group">
+            <label class="form-label"for="moneda">Moneda </label>
+            <select class="form-control"name="moneda" id="moneda"></select>
+          </div> -->
         </div>
-        <div class="form-group col-auto">
+
+        <div class="form-group col button">
           <div class="col-md-12 text-center">
             <button
               type="submit"
@@ -68,28 +73,17 @@
       </form>
     </div>
 
-    <div class="oculto res" id="tabla">
-      <div class="container">
-        <table class="table table-striped table-dark"<">
-          <thead>
-            <tr>
-              <th scope="col" class="value">Base</th>
-              <th scope="col" class="latest">Hoy</th>
-              <th scope="col" class="date">Fecha</th>
-            </tr>
-          </thead>
-          <tbody class="cuerpo-tabla"></tbody>
-        </table>
+    <div class="res container mt-4" id="div-tabla">
+      <div id="spinner" class="spinner-border oculto flex-center" role="status">
+        <span class="sr-only">Loading...</span>
       </div>
+      <div id="tabla"></div>
     </div>
     <!-- Bootstrap core JavaScript -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="src/ui.js"></script>
     <script src="src/api.js"></script>
     <script src="src/index.js"></script>
-    <script>  let fecha = ObtenerfechaHoy();
-      document.querySelector("#fecha").setAttribute("max", fecha);</script>
   </body>
 </html>
