@@ -28,8 +28,11 @@ function crearBodyTable(data) {
   let $tbody = document.createElement("tbody");
   Object.entries(data).map((dato) => {
     let tr = document.createElement("tr");
-    dato.map((el) => {
+    dato.map((el, index) => {
       let td = document.createElement("td");
+      if (index === 1) {
+        el = el.toFixed(3);
+      }
       td.textContent = el;
 
       tr.appendChild(td);
