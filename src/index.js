@@ -15,7 +15,7 @@ $form.addEventListener("submit", (e) => {
     { fecha: $fecha.value, moneda: $base.value },
   ];
   console.log(datosForm)
-  mostrarTabla(datosForm,$spinner);
+  mostrarTabla(datosForm,$spinner,$tabla);
   e.preventDefault();
   
 });

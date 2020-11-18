@@ -30,6 +30,7 @@ function crearBodyTable(data) {
     let tr = document.createElement("tr");
     dato.map((el, index) => {
       let td = document.createElement("td");
+
       if (index === 1) {
         el = el.toFixed(3);
       }
