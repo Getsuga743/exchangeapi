@@ -4,11 +4,8 @@
 
 // Carga de las opciones en el formulario
 
-async function cargarForm(el) {
-  let List = await getMonedas().then(({ rates }) => {
-    return Object.keys(rates).concat("EUR");
-  });
-  List.forEach((item) => {
+async function cargarForm(el, list) {
+  list.forEach((item) => {
     let option = document.createElement("option");
     option.value = item;
     option.textContent = item;
@@ -44,7 +41,7 @@ function crearBodyTable(data) {
   return $tbody;
 }
 
-function CrearTable(rates, base) {
+function CrearTabla(rates, base) {
   let $table = document.createElement("table");
   let $tbody = crearBodyTable(rates);
   let $thead = crearHeadTable(base);
@@ -56,10 +53,14 @@ function CrearTable(rates, base) {
 
 //render de los elementos
 
-function renderizarTabla([obj]) {
-  let { rates, base } = obj;
-  let tablaCreada = CrearTable(rates, base);
-  return tablaCreada;
+function renderizarTabla(obj) {
+  if (typeof obj === "object") {
+    let { rates, base } = obj;
+    let tablaCreada = CrearTabla(rates, base);
+    return tablaCreada;
+  } else {
+    return new Error(`se esperaba un objeto , se recibío ${typeof obj}`);
+  }
 }
 
 function renderizarError(text) {
@@ -69,18 +70,19 @@ function renderizarError(text) {
   return $error;
 }
 
-//resuelve las promesas,crea tabla con la data, si algo sale mal, renderiza un error
-function cargarResult(container, data) {
-  resolverLlamados(data)
-    .then((data) => container.appendChild(renderizarTabla(data)))
-    .catch(() => {
-      container.appendChild(renderizarError("Hubo un error, intente de nuevo"));
-    });
+async function cargarResultados(container, data) {
+  let tabla = await renderizarTabla(data);
+  console.log(tabla);
+  if (tabla != undefined) {
+    container.appendChild(tabla);
+  } else {
+    container.appendChild(renderizarError("hubo un error, intente de nuevo"));
+  }
 }
 
-function mostrarTabla(datosForm, spinner, tabla) {
+function mostrarTabla(  datosForm, spinner, tabla) {
   spinner.classList.remove("oculto");
   setTimeout(() => {
-    spinner.classList.add("oculto"), cargarResult(tabla, datosForm);
+    spinner.classList.add("oculto"), cargarResultados(tabla, datosForm);
   }, 500);
 }
