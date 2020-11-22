@@ -24,7 +24,6 @@ async function resolverLlamados(arr) {
 }
 
 async function resolverLlamada(objeto) {
-  console.log(objeto)
   if (objeto.fecha === "") {
     return await getMonedas("latest", objeto.moneda);
   }
