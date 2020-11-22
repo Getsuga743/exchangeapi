@@ -8,6 +8,7 @@ async function getMonedas(fecha = "latest", base = "EUR") {
   );
   const fetchJson = await response.json();
   return fetchJson;
+<<<<<<< HEAD
 }
 //esta función era porque queria convertir la web para renderizar mas de un llamado
 async function resolverLlamados(arr) {
@@ -19,3 +20,16 @@ async function resolverLlamados(arr) {
     })
     .catch((err) => err);
 }
+=======
+}
+
+async function resolverLlamada(objeto) {
+  console.log(objeto)
+  if (objeto.fecha === "") {
+    return await getMonedas("latest", objeto.moneda);
+  }
+  else{
+     return await getMonedas(objeto.fecha, objeto.value);
+  }
+}
+>>>>>>> 44b67062a7430b3c24f34bc4b413a8af3da8fcbf
