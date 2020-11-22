@@ -11,7 +11,6 @@ async function getMonedas(fecha = "latest", base = "EUR") {
 }
 
 async function resolverLlamada(objeto) {
-  console.log(objeto)
   if (objeto.fecha === "") {
     return await getMonedas("latest", objeto.moneda);
   }
