@@ -12,6 +12,11 @@ async function cargarForm(el, list) {
     el.append(option);
   });
 }
+// mantiene actualizada la fecha del formulario
+function configurarInputFecha(calendario) {
+  const hoy = new Date().toISOString().split("T")[0];
+  calendario.max = hoy;
+}
 
 //Creacion de la tabla
 
@@ -35,7 +40,7 @@ function crearBodyTable(divisas) {
 
       return tr.appendChild(td);
     });
-    $tbody.appendChild(tr);
+    return $tbody.appendChild(tr);
   });
 
   return $tbody;
@@ -68,7 +73,7 @@ function renderizarError(text) {
 
 function cargarResultados(container, data) {
   console.log(data);
-  if (data != null && Object.keys(data).length != 0) {
+  if (data != undefined && Object.keys(data).length != 0) {
     let tabla = renderizarTabla(data);
     container.appendChild(tabla);
   } else {

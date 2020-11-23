@@ -13,12 +13,9 @@ const cargarOpciones = (el) => {
       return cargarForm(el, monedas);
     });
 };
-function configurarInputFecha() {
-  const hoy = new Date().toISOString().split("T")[0];
-  $fecha.setAttribute = ("max", hoy);
-}
 
 cargarOpciones($base);
+configurarInputFecha($fecha);
 
 $form.addEventListener("submit", (e) => {
   $tabla.innerHTML = "";
