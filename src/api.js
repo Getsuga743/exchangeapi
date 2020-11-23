@@ -1,6 +1,6 @@
-//==============================
+// ==============================
 // Metodos de llamada a la API
-//==============================
+// ==============================
 
 async function getMonedas(fecha = "latest", base = "EUR") {
   const response = await fetch(
@@ -11,10 +11,7 @@ async function getMonedas(fecha = "latest", base = "EUR") {
 }
 
 async function resolverLlamada(objeto) {
-  if (objeto.fecha === "") {
-    return await getMonedas("latest", objeto.moneda);
-  }
-  else{
-     return await getMonedas(objeto.fecha, objeto.value);
-  }
+  const [fecha, value] = Object.values(objeto);
+  const llamada = await getMonedas(fecha, value);
+  return llamada;
 }

@@ -1,7 +1,6 @@
 const $form = document.querySelector("#Exchange");
 const $fecha = document.querySelector("#fecha");
 const $base = document.querySelector("#base");
-const $divResultado = document.querySelector("#resultadoMoneda");
 const $tabla = document.querySelector("#tabla");
 const $spinner = document.querySelector("#spinner");
 
@@ -14,17 +13,18 @@ const cargarOpciones = (el) => {
       return cargarForm(el, monedas);
     });
 };
+function configurarInputFecha() {
+  const hoy = new Date().toISOString().split("T")[0];
+  $fecha.setAttribute = ("max", hoy);
+}
+
+cargarOpciones($base);
 
 $form.addEventListener("submit", (e) => {
   $tabla.innerHTML = "";
-  resolverLlamada({ fecha: $fecha.value, moneda: $base.value }).then(
-    (datos) => {
-      mostrarTabla(datos, $spinner, $tabla);
-    },
-  );
+  let llamada = { fecha: $fecha.value || undefined, moneda: $base.value };
+  resolverLlamada(llamada).then((datos) => {
+    mostrarTabla(datos, $spinner, $tabla);
+  });
   e.preventDefault();
 });
-
-//resuelve las promesas,crea tabla con la data, si algo sale mal, renderiza un error
-
-cargarOpciones($base);
