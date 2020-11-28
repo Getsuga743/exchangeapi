@@ -4,8 +4,11 @@
 
 // Carga de las opciones en el formulario
 
-async function cargarForm(el, list) {
-  list.forEach((item) => {
+async function cargarForm(el) {
+  let List = await getMonedas().then(({ rates }) => {
+    return Object.keys(rates).concat("EUR");
+  });
+  List.forEach((item) => {
     let option = document.createElement("option");
     option.value = item;
     option.textContent = item;
@@ -26,13 +29,13 @@ function crearHeadTable(base) {
                       <th scope="col">Precio</th>`;
   return thead;
 }
+
 function crearBodyTable(divisas) {
   const $tbody = document.createElement("tbody");
   Object.entries(divisas).map((divisa) => {
     const tr = document.createElement("tr");
     divisa.map((el, index) => {
       const td = document.createElement("td");
-
       if (index === 1) {
         el = el.toFixed(3);
       }
@@ -46,6 +49,7 @@ function crearBodyTable(divisas) {
   return $tbody;
 }
 
+
 function CrearTabla(rates, base) {
   const $table = document.createElement("table");
   const $tbody = crearBodyTable(rates);
@@ -57,6 +61,7 @@ function CrearTabla(rates, base) {
 }
 
 // render de los elementos
+
 
 function renderizarTabla(obj) {
   const { rates, base } = obj;
@@ -71,6 +76,7 @@ function renderizarError(text) {
   return $error;
 }
 
+
 function cargarResultados(container, data) {
   console.log(data);
   if (data != undefined && Object.keys(data).length != 0) {
@@ -84,6 +90,7 @@ function cargarResultados(container, data) {
 function mostrarTabla(datosForm, spinner, tabla) {
   spinner.classList.remove("oculto");
   setTimeout(() => {
+
     spinner.classList.add("oculto");
     cargarResultados(tabla, datosForm);
   }, 500);

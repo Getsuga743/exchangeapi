@@ -10,8 +10,10 @@ async function getMonedas(fecha = "latest", base = "EUR") {
   return fetchJson;
 }
 
+
 async function resolverLlamada(objeto) {
   const [fecha, value] = Object.values(objeto);
   const llamada = await getMonedas(fecha, value);
   return llamada;
+
 }
