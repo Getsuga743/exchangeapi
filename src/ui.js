@@ -15,6 +15,11 @@ async function cargarForm(el) {
     el.append(option);
   });
 }
+// mantiene actualizada la fecha del formulario
+function configurarInputFecha(calendario) {
+  const hoy = new Date().toISOString().split("T")[0];
+  calendario.max = hoy;
+}
 
 //Creacion de la tabla
 
@@ -24,62 +29,69 @@ function crearHeadTable(base) {
                       <th scope="col">Precio</th>`;
   return thead;
 }
-function crearBodyTable(data) {
-  let $tbody = document.createElement("tbody");
-  Object.entries(data).map((dato) => {
-    let tr = document.createElement("tr");
-    dato.map((el, index) => {
-      let td = document.createElement("td");
+
+function crearBodyTable(divisas) {
+  const $tbody = document.createElement("tbody");
+  Object.entries(divisas).map((divisa) => {
+    const tr = document.createElement("tr");
+    divisa.map((el, index) => {
+      const td = document.createElement("td");
       if (index === 1) {
         el = el.toFixed(3);
       }
       td.textContent = el;
 
-      tr.appendChild(td);
+      return tr.appendChild(td);
     });
-    $tbody.appendChild(tr);
+    return $tbody.appendChild(tr);
   });
 
   return $tbody;
 }
 
-function CrearTable(rates, base) {
-  let $table = document.createElement("table");
-  let $tbody = crearBodyTable(rates);
-  let $thead = crearHeadTable(base);
+
+function CrearTabla(rates, base) {
+  const $table = document.createElement("table");
+  const $tbody = crearBodyTable(rates);
+  const $thead = crearHeadTable(base);
   $table.appendChild($thead);
   $table.className = "table table-striped table-dark text-center table-sm";
   $table.appendChild($tbody);
   return $table;
 }
 
-//render de los elementos
+// render de los elementos
 
-function renderizarTabla([obj]) {
-  let { rates, base } = obj;
-  let tablaCreada = CrearTable(rates, base);
+
+function renderizarTabla(obj) {
+  const { rates, base } = obj;
+  const tablaCreada = CrearTabla(rates, base);
   return tablaCreada;
 }
 
 function renderizarError(text) {
-  let $error = document.createElement("div");
+  const $error = document.createElement("div");
   $error.className = "alert alert-danger";
   $error.textContent = text;
   return $error;
 }
 
-//resuelve las promesas,crea tabla con la data, si algo sale mal, renderiza un error
-function cargarResult(container, data) {
-  resolverLlamados(data)
-    .then((data) => container.appendChild(renderizarTabla(data)))
-    .catch(() => {
-      container.appendChild(renderizarError("Hubo un error, intente de nuevo"));
-    });
+
+function cargarResultados(container, data) {
+  console.log(data);
+  if (data != undefined && Object.keys(data).length != 0) {
+    let tabla = renderizarTabla(data);
+    container.appendChild(tabla);
+  } else {
+    container.appendChild(renderizarError("hubo un error, intente de nuevo"));
+  }
 }
 
 function mostrarTabla(datosForm, spinner, tabla) {
   spinner.classList.remove("oculto");
   setTimeout(() => {
-    spinner.classList.add("oculto"), cargarResult(tabla, datosForm);
+
+    spinner.classList.add("oculto");
+    cargarResultados(tabla, datosForm);
   }, 500);
 }
