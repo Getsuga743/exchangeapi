@@ -4,7 +4,7 @@
 
 // Carga de las opciones en el formulario
 
-async function cargarForm(el, list) {
+export async function cargarForm(el, list) {
   list.forEach((item) => {
     let option = document.createElement("option");
     option.value = item;
@@ -13,7 +13,7 @@ async function cargarForm(el, list) {
   });
 }
 // mantiene actualizada la fecha del formulario
-function configurarInputFecha(calendario) {
+export function configurarInputFecha(calendario) {
   const hoy = new Date().toISOString().split("T")[0];
   calendario.max = hoy;
 }
@@ -81,7 +81,7 @@ function cargarResultados(container, data) {
   }
 }
 
-function mostrarTabla(datosForm, spinner, tabla) {
+export function mostrarTabla(datosForm, spinner, tabla) {
   spinner.classList.remove("oculto");
   setTimeout(() => {
     spinner.classList.add("oculto");

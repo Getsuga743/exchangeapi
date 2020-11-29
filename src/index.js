@@ -3,19 +3,12 @@ const $fecha = document.querySelector("#fecha");
 const $base = document.querySelector("#base");
 const $tabla = document.querySelector("#tabla");
 const $spinner = document.querySelector("#spinner");
+import { getMonedas, resolverLlamada } from "./api.js";
+import { cargarForm, configurarInputFecha, mostrarTabla } from "./ui.js";
+import { cargarInputs } from "./cambios.js";
 
-const cargarOpciones = (el) => {
-  getMonedas()
-    .then((res) => {
-      return Object.keys(res.rates).concat("EUR").sort();
-    })
-    .then((monedas) => {
-      return cargarForm(el, monedas);
-    });
-};
+cargarInputs($base, $fecha);
 
-cargarOpciones($base);
-configurarInputFecha($fecha);
 
 $form.addEventListener("submit", (e) => {
   $tabla.innerHTML = "";
