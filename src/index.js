@@ -3,8 +3,8 @@ const $fecha = document.querySelector("#fecha");
 const $base = document.querySelector("#base");
 const $tabla = document.querySelector("#tabla");
 const $spinner = document.querySelector("#spinner");
-import { getMonedas, resolverLlamada } from "./api.js";
-import { cargarForm, configurarInputFecha, mostrarTabla } from "./ui.js";
+import {  resolverLlamada } from "./api.js";
+import {  mostrarTabla } from "./ui.js";
 import { cargarInputs } from "./cambios.js";
 
 cargarInputs($base, $fecha);
